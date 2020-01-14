@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">App Movies</string>
+    <string name="error_fetch_movies">Por favor, verifique sua conexão à internet</string>
+    <string name="popular">Popular</string>
+    <string name="most_popular_movies">Filmes mais populares</string>
+    <string name="top_rated">Mais Votados</string>
+    <string name="highest_rated_movies">Filmes com a melhor classificação de todos os tempos</string>
+    <string name="upcoming">Próximas</string>
+    <string name="stay_updated">Mantenha-se atualizado com os filmes mais recentes</string>
+    <string name="movie_cover_description">IMAGEM CAPA DO FILME</string>
+    <string name="movie_poster_picture">IMAGEM POSTER FILME</string>
+    <string name="title_come_back">BOTAO DE VOLTAR</string>
+    <string name="poster_movies">POSTER FILMES</string>
+    <string name="mtv_title_app_movie">App Movies</string>
+    <string name="mtv_title_no_connection">Sem conexão com internet!</string>
+
+</resources>
