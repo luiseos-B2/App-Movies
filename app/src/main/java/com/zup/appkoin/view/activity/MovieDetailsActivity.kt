@@ -71,6 +71,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 .load("https://image.tmdb.org/t/p/w1280$movieBackdrop")
                 .transform(CenterCrop())
                 .into(backdrop)
+            backdrop.setMovementMultiplier(4f)
             backdrop.init()
         }
 
