@@ -8,12 +8,12 @@ import com.zup.appkoin.repository.DataRepository
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
-class MainViewModel(private val dataRepository: DataRepository) : ViewModel(){
+class MainViewModel(private val dataRepository: DataRepository) : ViewModel() {
 
     val popularMovie = MutableLiveData<List<Movie>>()
     val ratedMovies = MutableLiveData<List<Movie>>()
     val upcomingMovies = MutableLiveData<List<Movie>>()
-    val movieError :MutableLiveData<Throwable> = MutableLiveData()
+    val movieError: MutableLiveData<Throwable> = MutableLiveData()
 
     fun initializeLaunch() {
         viewModelScope.launch {

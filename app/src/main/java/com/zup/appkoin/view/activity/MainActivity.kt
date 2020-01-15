@@ -71,8 +71,8 @@ class MainActivity : AppCompatActivity(), DetailsMovieListener, ConnectivityRece
 
     @SuppressLint("ShowToast")
     private fun setupObservers() {
-       mainViewModel.initializeAsync()
-       //mainViewModel.initializeLaunch()
+       //mainViewModel.initializeAsync()
+       mainViewModel.initializeLaunch()
 
         mainViewModel.popularMovie.observe(this, Observer {
             popularMoviesRecycler.setList(it)

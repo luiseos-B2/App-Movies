@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
 import com.google.android.material.textview.MaterialTextView
 import com.zup.appkoin.R
+import com.zup.appkoin.view.util.ParallaxView
 import kotlinx.android.synthetic.main.activity_movie_details.*
 
 
@@ -25,7 +26,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         const val MOVIE_OVERVIEW = "extra_movie_overview"
     }
 
-    private lateinit var backdrop: ImageView
+    private lateinit var backdrop: ParallaxView
     private lateinit var poster: ImageView
     private lateinit var title: MaterialTextView
     private lateinit var rating: RatingBar
@@ -70,6 +71,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 .load("https://image.tmdb.org/t/p/w1280$movieBackdrop")
                 .transform(CenterCrop())
                 .into(backdrop)
+            backdrop.init()
         }
 
         extras.getString(MOVIE_POSTER)?.let { posterPath ->
@@ -84,5 +86,16 @@ class MovieDetailsActivity : AppCompatActivity() {
         releaseDate.text = extras.getString(MOVIE_RELEASE_DATE, "")
         overview.text = extras.getString(MOVIE_OVERVIEW, "")
     }
+
+    override fun onPause() {
+        super.onPause()
+        backdrop.unregisterSensorListener()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        backdrop.registerSensorListener()
+    }
+
 
 }

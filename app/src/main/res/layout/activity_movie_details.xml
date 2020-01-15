@@ -9,9 +9,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <com.zup.appkoin.view.util.ParallaxView
             android:id="@+id/movie_backdrop"
-            android:layout_width="0dp"
+            android:layout_width="500dp"
             android:layout_height="0dp"
             android:visibility="invisible"
             app:layout_constraintTop_toTopOf="parent"
