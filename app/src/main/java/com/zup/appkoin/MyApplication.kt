@@ -17,7 +17,6 @@ import org.koin.core.context.startKoin
 class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
-        instance = this
 
         startKoin {
             androidContext ( this@MyApplication)
@@ -26,14 +25,4 @@ class MyApplication : Application() {
 
     }
 
-    fun setConnectivityListener(listener: ConnectivityReceiverListener?) {
-        ConnectivityReceiver.connectivityReceiverListener = listener
-    }
-
-    companion object {
-        @get:Synchronized
-
-        var instance: MyApplication? = null
-            private set
-    }
 }

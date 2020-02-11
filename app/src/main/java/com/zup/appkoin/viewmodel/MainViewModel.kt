@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.zup.appkoin.api.response.Movie
 import com.zup.appkoin.repository.DataRepository
+import com.zup.appkoin.view.util.ConnectivityReceiver
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
@@ -33,7 +34,7 @@ class MainViewModel(private val dataRepository: DataRepository) : ViewModel(){
 
     fun initializeAsync() {
         viewModelScope.launch {
-            runCatching {
+            try {
                 val popularResult = async { dataRepository.getPopularMovies(1) }
                 val topRatedResult = async { dataRepository.getTopRatedMovies(1) }
                 val upcomingResult = async { dataRepository.getUpcomingMovies(1) }
@@ -41,9 +42,12 @@ class MainViewModel(private val dataRepository: DataRepository) : ViewModel(){
                 popularMovie.postValue(popularResult.await().movies)
                 ratedMovies.postValue(topRatedResult.await().movies)
                 upcomingMovies.postValue(upcomingResult.await().movies)
-            }.onFailure {
-                movieError.postValue(it)
+            } catch (throwable: Throwable) {
+                movieError.postValue(throwable)
             }
         }
     }
+
+
+
 }

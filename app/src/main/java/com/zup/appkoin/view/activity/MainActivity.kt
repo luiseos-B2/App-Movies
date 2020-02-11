@@ -2,8 +2,9 @@ package com.zup.appkoin.view.activity
 
 import android.annotation.SuppressLint
 import android.annotation.TargetApi
-import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
+import android.net.ConnectivityManager
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -14,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityOptionsCompat
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.RecyclerView
-import com.zup.appkoin.MyApplication
+import com.google.android.material.snackbar.Snackbar
 import com.zup.appkoin.R
 import com.zup.appkoin.api.response.Movie
 import com.zup.appkoin.view.activity.MovieDetailsActivity.Companion.MOVIE_BACKDROP
@@ -31,7 +32,8 @@ import kotlinx.android.synthetic.main.activity_main.*
 import org.koin.android.ext.android.inject
 import org.koin.android.viewmodel.ext.android.viewModel
 
-class MainActivity : AppCompatActivity(), DetailsMovieListener, ConnectivityReceiver.ConnectivityReceiverListener {
+class MainActivity : AppCompatActivity(), DetailsMovieListener ,
+    ConnectivityReceiver.ConnectivityReceiverListener{
 
     private val mainViewModel: MainViewModel by viewModel()
 
@@ -43,13 +45,17 @@ class MainActivity : AppCompatActivity(), DetailsMovieListener, ConnectivityRece
     private lateinit var topRatedMovies: RecyclerView
     private lateinit var upcomingMovies: RecyclerView
 
+    private var mSnackBar: Snackbar? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         setupViews()
         setupRecyclers()
-        checkConnection()
+
+        registerReceiver(ConnectivityReceiver(), IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION))
+
     }
 
     private fun setupViews() {
@@ -71,8 +77,8 @@ class MainActivity : AppCompatActivity(), DetailsMovieListener, ConnectivityRece
 
     @SuppressLint("ShowToast")
     private fun setupObservers() {
-       mainViewModel.initializeAsync()
-       //mainViewModel.initializeLaunch()
+        mainViewModel.initializeAsync()
+        //mainViewModel.initializeLaunch()
 
         mainViewModel.popularMovie.observe(this, Observer {
             popularMoviesRecycler.setList(it)
@@ -100,7 +106,7 @@ class MainActivity : AppCompatActivity(), DetailsMovieListener, ConnectivityRece
         })
 
         mainViewModel.movieError.observe(this, Observer {
-            Toast.makeText(this@MainActivity, "Ocorreu um erro na chamada!", Toast.LENGTH_LONG)
+            Toast.makeText(this@MainActivity, "Ops.. Você está Offline", Toast.LENGTH_LONG)
                 .show()
         })
     }
@@ -132,27 +138,38 @@ class MainActivity : AppCompatActivity(), DetailsMovieListener, ConnectivityRece
         showMovieDetails(movie, imageView)
     }
 
-    private fun checkConnection() {
-        val isConnected: Boolean = ConnectivityReceiver.isConnected
-        showSnack(isConnected)
-    }
 
-    private fun showSnack(isConnected: Boolean) {
+    private fun showConnection(isConnected: Boolean){
+
         if (isConnected) {
+            mSnackBar?.dismiss()
             setupObservers()
         } else {
-            Toast.makeText(this@MainActivity,"Sem conexão com internet!",Toast.LENGTH_LONG).show()
+            val messageToUser = "Você está offline agora!"
+
+            mSnackBar = Snackbar.make(
+                findViewById(R.id.layout_constraint),
+                messageToUser,
+                Snackbar.LENGTH_LONG
+            )
+            mSnackBar?.duration = Snackbar.LENGTH_INDEFINITE
+            mSnackBar?.show()
+            Toast.makeText(this@MainActivity, "Você está offline agora!", Toast.LENGTH_LONG)
+                .show()
         }
+
     }
 
     override fun onNetworkConnectionChanged(isConnected: Boolean) {
-        showSnack(isConnected)
+        showConnection(isConnected)
     }
 
     override fun onResume() {
         super.onResume()
-        MyApplication.instance?.setConnectivityListener(this)
+        ConnectivityReceiver.connectivityReceiverListener = this
     }
+
+
 }
 
 
