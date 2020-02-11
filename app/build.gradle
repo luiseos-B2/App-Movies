@@ -6,8 +6,6 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
-apply from: '../keys/properties.gradle'
-
 
 android {
     compileSdkVersion 29
@@ -19,10 +17,6 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-        buildConfigField "String", "TMDB_KEY", tmdb_key
-        buildConfigField "String", "URL_BASE", url_base
-        buildConfigField "String", "LANGUAGE", language
-
     }
     buildTypes {
         debug {

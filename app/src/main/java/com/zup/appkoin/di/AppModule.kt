@@ -23,8 +23,8 @@ val appModule = module {
                 val originalHttpUrl: HttpUrl = original.url
 
                 val url:HttpUrl = originalHttpUrl.newBuilder()
-                    .addQueryParameter("api_key", BuildConfig.TMDB_KEY)
-                    .addQueryParameter("language",BuildConfig.LANGUAGE)
+                    .addQueryParameter("api_key", "4b52fa3a04278ae92da164f3ee9820c5")
+                    .addQueryParameter("language","pt-BR")
                     .build()
                 val requestBuilder = original.newBuilder()
                     .url(url)
@@ -45,7 +45,7 @@ val appModule = module {
 
     single {
         Retrofit.Builder()
-                .baseUrl(BuildConfig.URL_BASE)
+                .baseUrl("https://api.themoviedb.org/3/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .client(get<OkHttpClient>())
                 .build()
