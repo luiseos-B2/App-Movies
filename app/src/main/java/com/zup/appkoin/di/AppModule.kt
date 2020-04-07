@@ -1,6 +1,5 @@
 package com.zup.appkoin.di
 
-import com.zup.appkoin.BuildConfig
 import com.zup.appkoin.api.request.MoviesApi
 import com.zup.appkoin.view.adapter.MoviesRecycler
 import okhttp3.*
@@ -16,15 +15,15 @@ val appModule = module {
         HttpLoggingInterceptor().apply { this.level = HttpLoggingInterceptor.Level.BODY }
     }
 
-    single (named("INTERCEPTOR")) {
-       object :Interceptor{
+    single(named("INTERCEPTOR")) {
+        object : Interceptor {
             override fun intercept(chain: Interceptor.Chain): Response {
                 val original: Request = chain.request()
                 val originalHttpUrl: HttpUrl = original.url
 
-                val url:HttpUrl = originalHttpUrl.newBuilder()
+                val url: HttpUrl = originalHttpUrl.newBuilder()
                     .addQueryParameter("api_key", "4b52fa3a04278ae92da164f3ee9820c5")
-                    .addQueryParameter("language","pt-BR")
+                    .addQueryParameter("language", "pt-BR")
                     .build()
                 val requestBuilder = original.newBuilder()
                     .url(url)
@@ -45,10 +44,10 @@ val appModule = module {
 
     single {
         Retrofit.Builder()
-                .baseUrl("https://api.themoviedb.org/3/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .client(get<OkHttpClient>())
-                .build()
+            .baseUrl("https://api.themoviedb.org/3/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(get<OkHttpClient>())
+            .build()
     }
 
     single {
